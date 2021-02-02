@@ -49,7 +49,7 @@ function build_Charts(initialSample) {
         // Sort results for bar chart
         var samplesArr = [];
 
-        //var forL = currentSample.sample_values.len
+        //Prepare data to sort, Store them into Array
         for (var i=0; i < currentSample.sample_values.length; i++) {
             var sDict = {}
 
@@ -60,6 +60,12 @@ function build_Charts(initialSample) {
             sDict.label = currentSample.otu_labels[i]
             samplesArr.push(sDict);
         }
+
+        // Sort data
+        var sortedResults = samplesArr.sort((a,b) => b.value - a.value)
+        var topResults = sortedResults.slice(0,10)
+        topResults = topResults.reverse()
+        console.log(topResults)
 
         console.log(samplesArr);
 
