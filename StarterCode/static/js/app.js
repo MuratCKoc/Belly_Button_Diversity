@@ -72,8 +72,8 @@ function build_Charts(initialSample) {
         // Bar Chart
         var bar_trace = [{
             type: "bar",
-            y: sortedResults,
-            x: currentSample.sample_values.slice(0,10).reverse(),
+            y: topResults.map(a => `otu_id: ${a.otu_id}` ),
+            x: topResults.map(a => a.value),
             hovertext: currentSample.otu_labels.slice(0,10).reverse(),
             marker: {color:"#2b7a73"},
             orientation: "h",
