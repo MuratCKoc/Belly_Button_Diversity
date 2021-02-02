@@ -60,15 +60,15 @@ function build_Charts(initialSample) {
             text: currentSample.otu_labels,
             mode: 'markers',
             marker: {
-                color: data.otu_ids,
-                size: data.sample_values
+                color: currentSample.otu_ids,
+                size: currentSample.sample_values
             }
         };
         var trace1 = [bubble_trace];
         var layout = {
             title: "OTU ID",
             height: 500,
-            widht: 1024
+            widht: 1200
         };
         Plotly.newPlot("bubble",trace1, layout, {responsive: true})
 
@@ -115,15 +115,15 @@ function plotGauge(wfreq) {
         domain: {x: [0, 1], y: [0, 1]},
         value: wfreq,
         mode: "gauge+number+delta",
-        delta: {reference: 8, increasing: {color:"yellow"}},
+        delta: {reference: 9, increasing: {color:"yellow"}},
         gauge: {
-            axis: {range: [0, 10]},
+        axis: { range: [null, 10] },
             steps: [
-                { range: [0, 5], color: "gray"},
-                { range: [5, 7], color: "black"},
+            { range: [0, 250], color: "lightgray" },
+            { range: [250, 400], color: "gray" }
             ],
-            threshold: {line: { color: "red", width: 4 }},
-        
+
+        threshold: {line: { color: "red", width: 4 }},
         thickness: 0.75,
         value: 490},
         type: "indicator",
