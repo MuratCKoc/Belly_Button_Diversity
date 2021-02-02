@@ -1,7 +1,7 @@
 // d3 bindings to html
 var options = d3.select("#select")
 var selector = d3.select("#selDataset");
-var demographics = d3.select("#demographics");
+var demographics = d3.select("#sample-metadata");
 
 
 function init() {
@@ -16,8 +16,27 @@ function init() {
         // Use the first sample to init the charts
         const initialSample = Names[0];
         build_Charts(initialSample);
+        buildMetadata(initialSample)
     });
 };
+
+function buildMetadata(initialSample) {
+    var panel = d3.select("#sample-metadata");
+
+    d3.json("samples.json").then(function (data) {
+        demographics.html("");
+
+        var all_metadata = data.metadata
+        // Filter the data
+        var subject_metadata = all_metadata.filter(line => line.id == initialSample)
+
+        Object.entries(subject_metadata[0]).forEach(([key, value]) => {
+            panel.append("h5").text(`${key}: ${value}`);
+        });
+    })
+}
+
+
 
 function build_Charts(initialSample) {
     d3.json("samples.json").then((data) => {
