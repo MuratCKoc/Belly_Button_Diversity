@@ -28,15 +28,22 @@ function buildMetadata(initialSample) {
 
         var all_metadata = data.metadata
         // Filter the data
-        var subject_metadata = all_metadata.filter(line => line.id == initialSample)
+        var sample_metadata = all_metadata.filter(line => line.id == initialSample)
+        
+        // Plot Guage
+        plotGauge(sample_metadata[0].wfreq);
 
-        Object.entries(subject_metadata[0]).forEach(([key, value]) => {
+        Object.entries(sample_metadata[0]).forEach(([key, value]) => {
             panel.append("h5").text(`${key}: ${value}`);
         });
     })
 }
 
-
+// optionChanged function to reload data
+function optionChanged(newSample) {
+    buildMetadata(newSample);
+    buildMetadata(newSample);
+}
 
 function build_Charts(initialSample) {
     d3.json("samples.json").then((data) => {
@@ -94,13 +101,39 @@ function build_Charts(initialSample) {
             y: topResults.map(a => `otu_id: ${a.otu_id}` ),
             x: topResults.map(a => a.value),
             hovertext: currentSample.otu_labels.slice(0,10).reverse(),
-            marker: {color:"#2b7a73"},
+            marker: {color:"#1a30d9"},
             orientation: "h",
             name: "Belly Flora"
         }]
         Plotly.newPlot("bar", bar_trace, {responsive:true})
 
     })
+}
+
+function plotGauge(wfreq) {
+    var data = [{
+        domain: {x: [0, 1], y: [0, 1]},
+        value: wfreq,
+        mode: "gauge+number+delta",
+        delta: {reference: 8, increasing: {color:"yellow"}},
+        gauge: {
+            axis: {range: [0, 10]},
+            steps: [
+                { range: [0, 5], color: "gray"},
+                { range: [5, 7], color: "black"},
+            ],
+            threshold: {line: { color: "red", width: 4 }},
+        
+        thickness: 0.75,
+        value: 490},
+        type: "indicator",
+        title: { 
+            text: "Belly Button Washing Frequency Scrubs Per Week",
+            font: {size: 13}}
+    }]
+
+    var layout = { widht: 400, height:500, margin: {t:0, b:0} };
+    Plotly.newPlot("gauge", data, layout);
 }
 
 // Event listener
