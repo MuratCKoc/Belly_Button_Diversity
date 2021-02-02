@@ -21,14 +21,17 @@ function init() {
 
 function build_Charts(initialSample) {
     d3.json("samples.json").then((data) => {
+
+        //Prepare chart data 
         var dataSample = data.samples;
         var chartObj = dataSample.filter(sampleObj => sampleObj.id == initialSample);
-        var result = chartObj[0];
-        // Assign otu values
+        var currentSample = chartObj[0];
+
+        // Bubble Chart
         var bubble_trace = {
-            x: chartObj[0].otu_ids,
-            y: chartObj[0].sample_values,
-            text: chartObj[0].otu_labels,
+            x: currentSample.otu_ids,
+            y: currentSample.sample_values,
+            text: currentSample.otu_labels,
             mode: 'markers',
             marker: {
                 color: data.otu_ids,
@@ -42,6 +45,36 @@ function build_Charts(initialSample) {
             widht: 1024
         };
         Plotly.newPlot("bubble",trace1, layout, {responsive: true})
+
+        // Sort results for bar chart
+        var samplesArr = [];
+
+        //var forL = currentSample.sample_values.len
+        for (var i=0; i < currentSample.sample_values.length; i++) {
+            var sDict = {}
+
+            sDict.otu_id = currentSample.otu_ids[i]
+
+            sDict.value = currentSample.sample_values[i]
+
+            sDict.label = currentSample.otu_labels[i]
+            samplesArr.push(sDict);
+        }
+
+        console.log(samplesArr);
+
+        // Bar Chart
+        var bar_trace = [{
+            type: "bar",
+            y: sortedResults,
+            x: currentSample.sample_values.slice(0,10).reverse(),
+            hovertext: currentSample.otu_labels.slice(0,10).reverse(),
+            marker: {color:"#2b7a73"},
+            orientation: "h",
+            name: "Belly Flora"
+        }]
+        Plotly.newPlot("bar", bar_trace, {responsive:true})
+
     })
 }
 
