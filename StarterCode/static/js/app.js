@@ -41,7 +41,7 @@ function buildMetadata(initialSample) {
 
 // optionChanged function to reload data
 function optionChanged(newSample) {
-    buildMetadata(newSample);
+    build_Charts(newSample);
     buildMetadata(newSample);
 }
 
@@ -68,7 +68,8 @@ function build_Charts(initialSample) {
         var layout = {
             title: "OTU ID",
             height: 500,
-            widht: 1200
+            widht: 1400,
+            margin: { t:50, r:50, b:50, l:50}
         };
         Plotly.newPlot("bubble",trace1, layout, {responsive: true})
 
@@ -129,7 +130,7 @@ function plotGauge(wfreq) {
         type: "indicator",
         title: { 
             text: "Belly Button Washing Frequency Scrubs Per Week",
-            font: {size: 13}}
+            font: {size: 15}}
     }]
 
     var layout = { widht: 400, height:500, margin: {t:0, b:0} };
