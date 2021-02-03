@@ -6,7 +6,7 @@ var demographics = d3.select("#sample-metadata");
 
 function init() {
     // Populate the dropdown
-    d3.json("samples.json").then((data) =>  {
+    d3.json("data/samples.json").then((data) =>  {
         var Names = data.names;
         Names.forEach((sample) => {
             selector.append("option").text(sample).property("value",sample);
@@ -23,7 +23,7 @@ function init() {
 function buildMetadata(initialSample) {
     var panel = d3.select("#sample-metadata");
 
-    d3.json("samples.json").then(function (data) {
+    d3.json("data/samples.json").then(function (data) {
         demographics.html("");
 
         var all_metadata = data.metadata
@@ -46,7 +46,7 @@ function optionChanged(newSample) {
 }
 
 function build_Charts(initialSample) {
-    d3.json("samples.json").then((data) => {
+    d3.json("data/samples.json").then((data) => {
 
         //Prepare chart data 
         var dataSample = data.samples;
@@ -116,17 +116,16 @@ function plotGauge(wfreq) {
         domain: {x: [0, 1], y: [0, 1]},
         value: wfreq,
         mode: "gauge+number+delta",
-        delta: {reference: 9, increasing: {color:"yellow"}},
+        delta: {reference: 9, increasing: {color:"green"}},
         gauge: {
         axis: { range: [null, 10] },
             steps: [
-            { range: [0, 250], color: "lightgray" },
-            { range: [250, 400], color: "gray" }
+            { range: [0, 5], color: "lightgray" },
+            { range: [5, 10], color: "gray" }
             ],
 
         threshold: {line: { color: "red", width: 4 }},
-        thickness: 0.75,
-        value: 490},
+        thickness: 0.75},
         type: "indicator",
         title: { 
             text: "Belly Button Washing Frequency Scrubs Per Week",
